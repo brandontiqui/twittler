@@ -24,15 +24,24 @@
             }
             else { // show tweet 
               var $tweet = $('<div></div>');
-              $tweet.text(tweet.created_at + ' ' + '@' + tweet.user + ': ' + tweet.message);
+              $tweet.html(tweet.created_at + ' <a href="#" class="stuff" data-tweeter="' + tweet.user+ '">' + '@' + tweet.user + '</a>: ' + tweet.message);
               $tweet.appendTo($body);
             }
           }
         }; // end function showTweets
 
-        showTweets('mracus');
+        showTweets();
 
-        var autoShowTweets = setInterval(function() { showTweets('mracus'); }, 5000);
+        $('.stuff').on('click', function() {
+          // var autoShowTweets = setInterval(function() { 
+          //   showTweets($(this).data('tweeter')); 
+          // }, 5000);
+          var tweeter = $(this).data('tweeter');
+          showTweets(tweeter);
+          var autoShowTweets = setInterval(function() { showTweets(tweeter); }, 5000);
+
+        });
+        // var autoShowTweets = setInterval(function() { showTweets('mracus'); }, 5000);
 
       });
 
