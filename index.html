@@ -8,7 +8,11 @@
     <script>
 
       $(document).ready(function(){
+        var milliseconds = 5000;
 
+        /*
+         * shows a snapshot of tweets at a given point in time
+         */
         var showTweets = function(inputUser) {
           
           var $body = $('body');
@@ -24,25 +28,34 @@
             }
             else { // show tweet 
               var $tweet = $('<div></div>');
-              $tweet.html(tweet.created_at + ' <a href="#" class="stuff" data-tweeter="' + tweet.user+ '">' + '@' + tweet.user + '</a>: ' + tweet.message);
+              $tweet.html(tweet.created_at + ' <a href="#" class="tweet-link" data-tweeter="' + tweet.user+ '">' + '@' + tweet.user + '</a>: ' + tweet.message);
               $tweet.appendTo($body);
             }
           }
         }; // end function showTweets
+        
+        /* precondition: showTweets has been invoked */
+        var tweetLink = function() {
+          $('.tweet-link').on('click', function() {
+            stopAutoTweets();
+            var tweeter = $(this).data('tweeter');
+            showTweets(tweeter);
+            var autoShowTweets = setInterval(function() { showTweets(tweeter); }, milliseconds);
+          });
+        };
 
         showTweets();
+        var autoShowTweets = setInterval(function() { 
+          showTweets(); 
+          tweetLink();
+        }, milliseconds);
 
-        $('.stuff').on('click', function() {
-          // var autoShowTweets = setInterval(function() { 
-          //   showTweets($(this).data('tweeter')); 
-          // }, 5000);
-          var tweeter = $(this).data('tweeter');
-          showTweets(tweeter);
-          var autoShowTweets = setInterval(function() { showTweets(tweeter); }, 5000);
+        /* precondition: setInterval has been invoked */
+        var stopAutoTweets = function() {
+          clearInterval(autoShowTweets);
+        }
 
-        });
-        // var autoShowTweets = setInterval(function() { showTweets('mracus'); }, 5000);
-
+        tweetLink();
       });
 
     </script>
