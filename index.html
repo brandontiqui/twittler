@@ -32,8 +32,8 @@
     <div class='tweets'></div>
     <div class='app-settings'>
       Auto Tweet
-      <input type='radio' name='auto' value='on'>on</input>
-      <input type='radio' name='auto' value='off' checked='checked'>off</input>
+      <input type='radio' name='auto' value='on' checked>on</input>
+      <input type='radio' name='auto' value='off'>off</input>
     </div>
     <script>
 
@@ -43,7 +43,7 @@
 
         // initial state
         $('.app-settings').hide();
-        var selected = $('input[name="auto"]:checked').val();
+        var autoTweetSelected = $('input[name="auto"]:checked').val();
 
 
         /*
@@ -72,13 +72,15 @@
         }; // end function showTweets
         
         /* precondition: showTweets has been invoked */
-        var tweetLink = function() {
+        var tweetLink = function(autotweet = true) {
           $('.tweet-link').on('click', function(event) {
             event.preventDefault();
             stopAutoTweets();
             var tweeter = $(this).data('tweeter');
             showTweets(tweeter);
-            autoShowTweets = setInterval(function() { showTweets(tweeter); }, milliseconds);
+            if (autotweet) {
+              autoShowTweets = setInterval(function() { showTweets(tweeter); }, milliseconds);
+            }
           });
         };
 
@@ -100,8 +102,15 @@
           $('.tweets').show();
           stopAutoTweets();
           showTweets();
-          tweetLink();
-          startAutoTweets();
+
+          console.log(autoTweetSelected);
+          if (autoTweetSelected === 'off') {
+            tweetLink(false);
+          }
+          else {
+            tweetLink();
+            startAutoTweets();
+          }
         });
 
         $('.settings').on("click", function() {
@@ -114,8 +123,19 @@
         });
 
         $('input').on("click", function() {
-          selected = $('input[name="auto"]:checked').val();
-          console.log(selected);
+          autoTweetSelected = $('input[name="auto"]:checked').val();
+          console.log(autoTweetSelected);
+          if (autoTweetSelected === 'off') {
+            stopAutoTweets();
+            showTweets();
+            tweetLink(false);
+          }
+          else {
+            stopAutoTweets();
+            showTweets();
+            tweetLink();
+            startAutoTweets();
+          }
         });
 
         showTweets();
