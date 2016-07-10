@@ -35,8 +35,10 @@
       <input type='radio' name='auto' value='on' checked> on
       <input type='radio' name='auto' value='off'> off
       <br>
-      Seconds
-      <input type='number' name='seconds' step='1' value='5'> 
+      <div class="seconds">
+        Seconds
+        <input type='number' name='seconds' step='1' value='5' min='1'> 
+      </div>
     </div>
     <script>
 
@@ -45,6 +47,7 @@
 
         // initial state
         $('.app-settings').hide();
+        $('.seconds').show();
         var autoTweetSelected = $('input[name="auto"]:checked').val();
         var seconds = +$('input[name="seconds"]').val();
         var milliseconds = seconds * 1000;
@@ -127,11 +130,13 @@
         $('input[name="auto"]').on("click", function() {
           autoTweetSelected = $('input[name="auto"]:checked').val();
           if (autoTweetSelected === 'off') {
+            $('.seconds').hide();
             stopAutoTweets();
             showTweets();
             tweetLink(false);
           }
           else {
+            $('.seconds').show();
             stopAutoTweets();
             showTweets();
             tweetLink();
@@ -141,6 +146,7 @@
 
         $('input[name="seconds"]').on("click", function() {
           var seconds = +$('input[name="seconds"]').val();
+          console.log(seconds);
           milliseconds = 1000 * seconds;
         });
 
