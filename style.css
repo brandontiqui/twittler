@@ -1,0 +1,14 @@
+body {
+	margin: 0;
+}
+
+pre {
+	color: blue;
+	/*display: inline-block;*/
+	background-color: yellow;
+	text-align: center;
+	margin-top: -10px;
+	height: 200px;
+}
+
+
