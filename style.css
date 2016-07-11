@@ -48,16 +48,27 @@ table {
 }
 
 /* end of CSS reset */
+p {
+	display: inline-block;
+	background-color:blue;
+}
 
-body {
+html, body {
 	margin: 0;
+	height: 100%;
 }
 
 header, footer {
-	/*margin-top: 0;*/
-	/*padding: 10px;*/
 	background-color: yellow;
 	text-align: center;
+}
+
+footer {
+	position: absolute;
+	height: 50px;
+	bottom:0;
+	left:0;
+	width: 100%;
 }
 
 .container {
@@ -65,5 +76,10 @@ header, footer {
 	margin: 0 auto;
 	padding-left: 30px;
 	padding-right: 30px;
-	height: 100vh;
+	padding-bottom: 50px; /* same height as footer height */
+}
+
+.wrapper { /* allows footer to stay on the bottom */
+	min-height: 100%;
+	position: relative;
 }

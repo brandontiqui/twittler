@@ -6,155 +6,151 @@
     <script src="data_generator.js"></script>
   </head>
   <body>
-    <header>
-      <h1>Twittler</h1>
-      <nav>
-        <a href="#" class='all-tweets'>All tweets</a>
-        <a href="#" class ='settings'>Settings</a>
-      </nav>
-    </header>
+    <div class='wrapper'>
+      <header>
+        <h1>Twittler</h1>
+        <nav>
+          <a href="#" class='all-tweets'>All tweets</a>
+          <a href="#" class ='settings'>Settings</a>
+        </nav>
+      </header>
 
-    <div class="container">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <div class='tweets'></div>
-      <div class='app-settings'>
-        Auto Tweet
-        <input type='radio' name='auto' value='on' checked> on
-        <input type='radio' name='auto' value='off'> off
-        <br>
-        <div class="seconds">
-          Seconds
-          <input type='number' name='seconds' step='1' value='5' min='1'> 
+      <div class="container">
+        <div class='tweets'></div>
+        <div class='app-settings'>
+          Auto Tweet
+          <input type='radio' name='auto' value='on' checked> on
+          <input type='radio' name='auto' value='off'> off
+          <br>
+          <div class="seconds">
+            Seconds
+            <input type='number' name='seconds' step='1' value='5' min='1'> 
+          </div>
         </div>
       </div>
-    </div>
 
-    <footer>
-      <nav>
-        <a href="#" class='all-tweets'>All tweets</a>
-        <a href="#" class ='settings'>Settings</a>
-      </nav>
-    </footer>
+      <footer>
+        <nav>
+          <a href="#" class='all-tweets'>All tweets</a>
+          <a href="#" class ='settings'>Settings</a>
+        </nav>
+      </footer>
 
-    <script>
+      <script>
 
-      $(document).ready(function(){
-        var autoShowTweets; // must be global
+        $(document).ready(function(){
+          var autoShowTweets; // must be global
 
-        // initial state
-        $('.app-settings').hide();
-        $('.seconds').show();
-        var autoTweetSelected = $('input[name="auto"]:checked').val();
-        var seconds = +$('input[name="seconds"]').val();
-        var milliseconds = seconds * 1000;
+          // initial state
+          $('.app-settings').hide();
+          $('.seconds').show();
+          var autoTweetSelected = $('input[name="auto"]:checked').val();
+          var seconds = +$('input[name="seconds"]').val();
+          var milliseconds = seconds * 1000;
 
-        /*
-         * shows a snapshot of tweets at a given point in time
-         */
-        var showTweets = function(inputUser) {
+          /*
+           * shows a snapshot of tweets at a given point in time
+           */
+          var showTweets = function(inputUser) {
+            
+            // var $body = $('body');
+            var $tweets = $('.tweets');
+            $tweets.html('');
+
+            var index = streams.home.length - 1;
+            while(index >= 0){
+              var tweet = streams.home[index];
+
+              index -= 1;
+              if (inputUser !== undefined && tweet.user !== inputUser) {
+                continue;
+              }
+              else { // show tweet 
+                var $tweet = $('<div></div>');
+                $tweet.html(tweet.created_at + ' <a href="#" class="tweet-link" data-tweeter="' + tweet.user+ '">' + '@' + tweet.user + '</a>: ' + tweet.message);
+                $tweet.appendTo($tweets);
+              }
+            }
+          }; // end function showTweets
           
-          // var $body = $('body');
-          var $tweets = $('.tweets');
-          $tweets.html('');
+          /* precondition: showTweets has been invoked */
+          var tweetLink = function(autotweet = true) {
+            $('.tweet-link').on('click', function(event) {
+              event.preventDefault();
+              stopAutoTweets();
+              var tweeter = $(this).data('tweeter');
+              showTweets(tweeter);
+              if (autotweet) {
+                autoShowTweets = setInterval(function() { showTweets(tweeter); }, milliseconds);
+              }
+            });
+          };
 
-          var index = streams.home.length - 1;
-          while(index >= 0){
-            var tweet = streams.home[index];
+          var startAutoTweets = function() {
+            autoShowTweets = setInterval(function() { 
+              showTweets(); 
+              tweetLink();
+            }, milliseconds);
+          };
 
-            index -= 1;
-            if (inputUser !== undefined && tweet.user !== inputUser) {
-              continue;
-            }
-            else { // show tweet 
-              var $tweet = $('<div></div>');
-              $tweet.html(tweet.created_at + ' <a href="#" class="tweet-link" data-tweeter="' + tweet.user+ '">' + '@' + tweet.user + '</a>: ' + tweet.message);
-              $tweet.appendTo($tweets);
-            }
+
+          /* precondition: setInterval has been invoked */
+          var stopAutoTweets = function() {
+            clearInterval(autoShowTweets);
           }
-        }; // end function showTweets
-        
-        /* precondition: showTweets has been invoked */
-        var tweetLink = function(autotweet = true) {
-          $('.tweet-link').on('click', function(event) {
-            event.preventDefault();
+
+          $('.all-tweets').on("click", function() {
+            $('.app-settings').hide();
+            $('.tweets').show();
             stopAutoTweets();
-            var tweeter = $(this).data('tweeter');
-            showTweets(tweeter);
-            if (autotweet) {
-              autoShowTweets = setInterval(function() { showTweets(tweeter); }, milliseconds);
+            showTweets();
+
+            if (autoTweetSelected === 'off') {
+              tweetLink(false);
+            }
+            else {
+              tweetLink();
+              startAutoTweets();
             }
           });
-        };
 
-        var startAutoTweets = function() {
-          autoShowTweets = setInterval(function() { 
-            showTweets(); 
-            tweetLink();
-          }, milliseconds);
-        };
+          $('.settings').on("click", function() {
+            $('.tweets').hide();
+            $('.app-settings').show();
+          });
 
+          $('a').on("click", function(event) {
+            event.preventDefault();
+          });
 
-        /* precondition: setInterval has been invoked */
-        var stopAutoTweets = function() {
-          clearInterval(autoShowTweets);
-        }
+          $('input[name="auto"]').on("click", function() {
+            autoTweetSelected = $('input[name="auto"]:checked').val();
+            if (autoTweetSelected === 'off') {
+              $('.seconds').hide();
+              stopAutoTweets();
+              showTweets();
+              tweetLink(false);
+            }
+            else {
+              $('.seconds').show();
+              stopAutoTweets();
+              showTweets();
+              tweetLink();
+              startAutoTweets();
+            }
+          });
 
-        $('.all-tweets').on("click", function() {
-          $('.app-settings').hide();
-          $('.tweets').show();
-          stopAutoTweets();
+          $('input[name="seconds"]').on("click", function() {
+            var seconds = +$('input[name="seconds"]').val();
+            milliseconds = 1000 * seconds;
+          });
+
           showTweets();
-
-          if (autoTweetSelected === 'off') {
-            tweetLink(false);
-          }
-          else {
-            tweetLink();
-            startAutoTweets();
-          }
+          startAutoTweets();
+          tweetLink();
         });
 
-        $('.settings').on("click", function() {
-          $('.tweets').hide();
-          $('.app-settings').show();
-        });
-
-        $('a').on("click", function(event) {
-          event.preventDefault();
-        });
-
-        $('input[name="auto"]').on("click", function() {
-          autoTweetSelected = $('input[name="auto"]:checked').val();
-          if (autoTweetSelected === 'off') {
-            $('.seconds').hide();
-            stopAutoTweets();
-            showTweets();
-            tweetLink(false);
-          }
-          else {
-            $('.seconds').show();
-            stopAutoTweets();
-            showTweets();
-            tweetLink();
-            startAutoTweets();
-          }
-        });
-
-        $('input[name="seconds"]').on("click", function() {
-          var seconds = +$('input[name="seconds"]').val();
-          milliseconds = 1000 * seconds;
-        });
-
-        showTweets();
-        startAutoTweets();
-        tweetLink();
-      });
-
-    </script>
+      </script>
+    </div>
   </body>
 </html>
