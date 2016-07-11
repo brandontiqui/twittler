@@ -11,4 +11,8 @@ pre {
 	height: 200px;
 }
 
-
+.container {
+	max-width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+}
