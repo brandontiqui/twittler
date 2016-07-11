@@ -47,15 +47,19 @@ table {
 	border-spacing: 0;
 }
 
-/* end of CSS reset */
-p {
-	display: inline-block;
-	background-color:blue;
-}
+/*
+  ========================================
+  end of CSS reset
+  ========================================
+*/
+
 
 html, body {
 	margin: 0;
 	height: 100%;
+	color: #f8f8f8;
+	background-color: #252525;
+	font: 300 16px/22px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 header, footer {
@@ -65,10 +69,43 @@ header, footer {
 
 footer {
 	position: absolute;
-	height: 50px;
+	height: 50px; /* vertical center: equal to line-height */
 	bottom:0;
 	left:0;
 	width: 100%;
+	padding-bottom: 44px;
+	padding-top: 44px;
+	line-height: 50px;
+}
+
+
+h1, p {
+	margin-bottom: 22px;
+}
+
+a:hover {
+	color: yellow;
+}
+
+a {
+	text-decoration: none;
+}
+
+strong {
+	font-weight: 400;
+}
+
+em {
+	font-style: italic;
+}
+
+.logo {
+	color: #252525;
+	font-size: 48px;
+	line-height: 44px;
+	font-weight: 100;
+	letter-spacing: 0.5px;
+	padding: 40px 0 22px 0;
 }
 
 .container {
@@ -76,10 +113,51 @@ footer {
 	margin: 0 auto;
 	padding-left: 30px;
 	padding-right: 30px;
-	padding-bottom: 50px; /* same height as footer height */
+	padding-bottom: 133px; /* same height as total footer height */
 }
 
 .wrapper { /* allows footer to stay on the bottom */
 	min-height: 100%;
 	position: relative;
+}
+
+.hero { /* hero */
+	padding: 22px 80px 66px 80px;
+}
+
+.hero p {
+	font-size: 24px;
+	font-weight: 100;
+}
+
+.primary-nav {
+	font-size: 14px;
+	font-weight: 400;
+	letter-spacing: .5px;
+	text-transform: uppercase;
+}
+
+/*
+  ========================================
+  Buttons
+  ========================================
+*/
+
+
+.btn {
+	border-radius: 5px;
+	display: inline-block;
+	margin: 0;
+	background-color: blue;
+	color: white;
+}
+
+.btn-alt {
+	border: 1px solid #dfe2e5;
+	padding: 10px 30px;
+}
+
+.btn:hover {
+	background-color: white;
+	color: blue;
 }

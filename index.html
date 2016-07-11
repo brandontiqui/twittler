@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Twittler</title>
     <link rel="stylesheet" href="style.css">
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
@@ -8,31 +9,35 @@
   <body>
     <div class='wrapper'>
       <header>
-        <h1>Twittler</h1>
-        <nav>
-          <a href="#" class='all-tweets'>All tweets</a>
-          <a href="#" class ='settings'>Settings</a>
+        <h1 class='logo'>Twittler</h1>
+        <nav class='primary-nav'>
+          <a href='#' class='all-tweets btn btn-alt'>All tweets</a>
+          <a href='#' class ='settings btn btn-alt'>Settings</a>
         </nav>
       </header>
 
       <div class="container">
-        <div class='tweets'></div>
-        <div class='app-settings'>
-          Auto Tweet
-          <input type='radio' name='auto' value='on' checked> on
-          <input type='radio' name='auto' value='off'> off
-          <br>
-          <div class="seconds">
-            Seconds
-            <input type='number' name='seconds' step='1' value='5' min='1'> 
+        <div class='hero'>
+          <div class='tweets'></div>
+        
+          <div class='app-settings'>
+            <p>When auto tweet mode is off you can get the latest list of tweets by clicking the 'ALL TWEETS' button.  You can change the number of seconds between updates when auto tweet mode is on.</p>
+            Auto Tweet
+            <input type='radio' name='auto' value='on' checked> on
+            <input type='radio' name='auto' value='off'> off
+            <br>
+            <div class="seconds">
+              Seconds
+              <input type='number' name='seconds' step='1' value='5' min='1'> 
+            </div>
           </div>
         </div>
       </div>
 
       <footer>
         <nav>
-          <a href="#" class='all-tweets'>All tweets</a>
-          <a href="#" class ='settings'>Settings</a>
+          <a href='#'' class='all-tweets'>All tweets</a>
+          <a href='#' class ='settings'>Settings</a>
         </nav>
       </footer>
 
@@ -71,6 +76,8 @@
                 $tweet.appendTo($tweets);
               }
             }
+            var $p = $("<p>Welcome to Twittler!  Click on a username to see that user's timeline.</p>")
+            $p.prependTo($tweets)
           }; // end function showTweets
           
           /* precondition: showTweets has been invoked */
