@@ -72,7 +72,7 @@
               }
               else { // show tweet 
                 var $tweet = $('<div></div>');
-                $tweet.html(tweet.created_at + ' <a href="#" class="tweet-link" data-tweeter="' + tweet.user+ '">' + '@' + tweet.user + '</a>: ' + tweet.message);
+                $tweet.html('<span class="created-at">' + tweet.created_at + '</span>' + ' <a href="#" class="tweet-link" data-tweeter="' + tweet.user+ '">' + '@' + tweet.user + '</a>: ' + '<span class="message">' + tweet.message + '</span>');
                 $tweet.appendTo($tweets);
               }
             }

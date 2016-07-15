@@ -63,7 +63,10 @@ html, body {
 }
 
 header, footer {
-	background-color: yellow;
+	background: yellow;
+	background: -webkit-linear-gradient(yellow, orange);
+	background: -moz-linear-gradient(yellow, orange);
+	background: linear-gradient(to right bottom, yellow, orange);
 	text-align: center;
 }
 
@@ -76,6 +79,7 @@ footer {
 	padding-bottom: 44px;
 	padding-top: 44px;
 	line-height: 50px;
+	font-size: 14px;
 }
 
 
@@ -87,8 +91,16 @@ a:hover {
 	color: yellow;
 }
 
+footer a:hover {
+	color: blue;
+}
+
 a {
 	text-decoration: none;
+}
+
+nav a {
+	padding: 0 50px;
 }
 
 strong {
@@ -121,7 +133,7 @@ em {
 	position: relative;
 }
 
-.hero { /* hero */
+.hero { 
 	padding: 22px 80px 66px 80px;
 }
 
@@ -137,6 +149,16 @@ em {
 	text-transform: uppercase;
 }
 
+.message {
+	/*color: chartreuse;*/
+	font-weight: 200;
+}
+
+.created-at {
+	/*color: lightgray;*/
+	font-weight: 100;
+}
+
 /*
   ========================================
   Buttons
@@ -148,16 +170,15 @@ em {
 	border-radius: 5px;
 	display: inline-block;
 	margin: 0;
-	background-color: blue;
-	color: white;
 }
 
 .btn-alt {
 	border: 1px solid #dfe2e5;
 	padding: 10px 30px;
+	color: white;
 }
 
-.btn:hover {
-	background-color: white;
-	color: blue;
+.btn-alt:hover {
+	background-color: blue;
+	color: white;
 }
